@@ -6,7 +6,7 @@
     </springProfile>
 
     <springProfile name="maison">
-        <property name="logging.path" value="/Users/seb/logs" />
+        <property name="logging.path" value="/logs" />
     </springProfile>
 
 
