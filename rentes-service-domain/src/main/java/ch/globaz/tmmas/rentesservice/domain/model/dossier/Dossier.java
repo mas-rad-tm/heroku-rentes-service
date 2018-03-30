@@ -2,14 +2,15 @@ package ch.globaz.tmmas.rentesservice.domain.model.dossier;
 
 import ch.globaz.tmmas.rentesservice.domain.common.Entity;
 import ch.globaz.tmmas.rentesservice.domain.command.CreerDossierCommand;
-import ch.globaz.tmmas.rentesservice.domain.common.specification.Specification;
-import ch.globaz.tmmas.rentesservice.domain.reglesmetiers.DateValidationPlusRecenteDateEnregistrement;
+import ch.globaz.tmmas.rentesservice.domain.model.droit.Droit;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @ToString
 @EqualsAndHashCode
@@ -23,6 +24,7 @@ public class Dossier implements Entity<Dossier> {
     private LocalDate dateCloture;
     private Long requerantId;
     private DossierStatus status;
+
 
 
     public DossierId identifiant() {
@@ -50,6 +52,7 @@ public class Dossier implements Entity<Dossier> {
         this.dateEnregistrement = dateEnregistrement;
         this.identifiant = DossierId.aleatoire();
         this.status = DossierStatus.INITIE;
+
     }
 
     public static Dossier builder(Long requerantId, LocalDate dateEnregistrement) {
@@ -79,7 +82,7 @@ public class Dossier implements Entity<Dossier> {
     //hibernate
     private Long id;
 
-    Dossier() {}
+    public Dossier() {}
 
 
 

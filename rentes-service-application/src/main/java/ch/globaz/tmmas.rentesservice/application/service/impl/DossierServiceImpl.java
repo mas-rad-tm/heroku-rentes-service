@@ -1,11 +1,12 @@
 package ch.globaz.tmmas.rentesservice.application.service.impl;
 
-import ch.globaz.tmmas.rentesservice.api.web.exception.RegleMetiersNonSatisfaite;
-import ch.globaz.tmmas.rentesservice.api.web.resources.DossierResource;
+import ch.globaz.tmmas.rentesservice.application.api.web.resources.DossierResource;
+import ch.globaz.tmmas.rentesservice.application.api.web.resources.DroitResource;
 import ch.globaz.tmmas.rentesservice.application.event.impl.DomainEventPublisher;
-import ch.globaz.tmmas.rentesservice.api.service.DossierService;
+import ch.globaz.tmmas.rentesservice.application.service.DossierService;
 import ch.globaz.tmmas.rentesservice.domain.command.CloreDossierCommand;
 import ch.globaz.tmmas.rentesservice.domain.command.CreerDossierCommand;
+import ch.globaz.tmmas.rentesservice.domain.command.CreerDroitCommand;
 import ch.globaz.tmmas.rentesservice.domain.command.ValiderDossierCommand;
 import ch.globaz.tmmas.rentesservice.domain.common.specification.Specification;
 import ch.globaz.tmmas.rentesservice.domain.event.DossierClotEvent;
@@ -13,6 +14,7 @@ import ch.globaz.tmmas.rentesservice.domain.event.DossierCreeEvent;
 import ch.globaz.tmmas.rentesservice.domain.event.DossierValideeEvent;
 import ch.globaz.tmmas.rentesservice.domain.model.dossier.Dossier;
 import ch.globaz.tmmas.rentesservice.domain.model.dossier.DossierStatus;
+import ch.globaz.tmmas.rentesservice.domain.model.droit.Droit;
 import ch.globaz.tmmas.rentesservice.domain.reglesmetiers.DateCloturePlusRecenteDateValidation;
 import ch.globaz.tmmas.rentesservice.domain.reglesmetiers.DateValidationPlusRecenteDateEnregistrement;
 import ch.globaz.tmmas.rentesservice.domain.reglesmetiers.StatusDossierCorrespond;
@@ -40,13 +42,9 @@ public class DossierServiceImpl implements DossierService {
 	public List<DossierResource> getAll() {
 		List<Dossier> dossiers =  repository.allDossiers();
 
-		return dossiers.stream().map(dossier -> {
-
-			return new DossierResource.DossierResourceBuilder(dossier)
-					.dateValidation(dossier.getDateValidation())
-					.dateCloture(dossier.getDateCloture()).build();
-
-		}).collect(Collectors.toList());
+		return dossiers.stream().map(dossier -> new DossierResource.DossierResourceBuilder(dossier)
+                .dateValidation(dossier.getDateValidation())
+                .dateCloture(dossier.getDateCloture()).build()).collect(Collectors.toList());
 
 	}
 
@@ -62,7 +60,7 @@ public class DossierServiceImpl implements DossierService {
 
 		 	return Optional.of(res);
 
-		}).orElseGet(()-> Optional.empty());
+		}).orElseGet(Optional::empty);
 
 	}
 
@@ -104,7 +102,7 @@ public class DossierServiceImpl implements DossierService {
 
 			return Optional.of(dto);
 
-		}).orElseGet(()-> Optional.empty());
+		}).orElseGet(Optional::empty);
 
 
 	}
@@ -135,10 +133,9 @@ public class DossierServiceImpl implements DossierService {
 
 			return Optional.of(dto);
 
-		}).orElseGet(() -> Optional.empty());
+		}).orElseGet(Optional::empty);
 
 	}
-
 
 
 
